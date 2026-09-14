@@ -109,6 +109,13 @@ All fetched on 2026-09-14 from `https://easyeda.com/api/products/<id>/components
       (msi/nsis) on `v*` tags via `tauri-apps/tauri-action` (unsigned, draft release); `ci.yml` runs
       typecheck/tests/build on every push. README has the Gatekeeper workaround.
 
+## Post-M5 additions
+
+- **Remove deviceset** (`src/core/lbr/remove.ts`, UI *Remove* button per table row, CLI `--remove NAME --into
+  file [--keep-unused]`). Removes the deviceset and, by default, the packages/symbols no remaining deviceset
+  references. Packages referenced from `<packages3d>` are never removed. Removing a freshly added part
+  restores the file byte for byte (tested).
+
 ## Next steps / ideas
 
 - Validate the generated geometry in Fusion with `VALIDATION.md` (nothing has been opened in Fusion yet).

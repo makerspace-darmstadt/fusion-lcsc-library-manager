@@ -4,6 +4,7 @@ import './App.css';
 import { ConflictDialog } from './components/ConflictDialog.tsx';
 import { LibraryTable } from './components/LibraryTable.tsx';
 import { PartCard } from './components/PartCard.tsx';
+import { RemoveDialog } from './components/RemoveDialog.tsx';
 import { SettingsPanel } from './components/SettingsPanel.tsx';
 import { Toasts, type ToastMessage } from './components/Toast.tsx';
 import { DEFAULT_CATEGORIES, suggestCategory, type Category } from './core/categories.ts';
@@ -13,6 +14,7 @@ import type { PartSvgs } from './core/easyeda/fetch.ts';
 import type { PartModel } from './core/easyeda/types.ts';
 import { createEmptyLibrary, parseLbr, serializeLbr, summariseDevicesets, type DevicesetSummary } from './core/lbr/document.ts';
 import { applyMerge, planMerge, type MergePlan, type Resolution } from './core/lbr/merge.ts';
+import { applyRemoval, planRemoval, type RemovalPlan } from './core/lbr/remove.ts';
 import { saveLbrSafely } from './core/lbr/save.ts';
 import { easyEda, pickLibraryToCreate, pickLibraryToOpen, tauriFs } from './tauri/adapters.ts';
 import { loadSettings, saveSettings } from './tauri/settings.ts';
@@ -39,6 +41,8 @@ export default function App() {
   const [categoryId, setCategoryId] = useState<string>(DEFAULT_CATEGORIES[0].id);
   const [adding, setAdding] = useState(false);
   const [conflictPlan, setConflictPlan] = useState<MergePlan | null>(null);
+  const [removal, setRemoval] = useState<RemovalPlan | null>(null);
+  const [removing, setRemoving] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const toastId = useRef(0);
@@ -161,6 +165,34 @@ export default function App() {
     else void merge({});
   }
 
+  function onRemoveRequest(name: string) {
+    if (!library) return;
+    try {
+      setRemoval(planRemoval(parseLbr(library.text), name));
+    } catch (e) {
+      toast('error', describeError(e));
+    }
+  }
+
+  async function removeDeviceset(removeOrphans: boolean) {
+    if (!library || !removal) return;
+    setRemoving(true);
+    try {
+      const doc = parseLbr(library.text);
+      const r = applyRemoval(doc, removal.devicesetName, { removeOrphans });
+      const text = serializeLbr(doc);
+      const saved = await saveLbrSafely(tauriFs, library.path, text);
+      setLibrary({ path: library.path, text, devicesets: summariseDevicesets(doc) });
+      const extras = [...r.removedPackages.map((p) => `package ${p}`), ...r.removedSymbols.map((s) => `symbol ${s}`)];
+      toast('success', `Removed ${r.removedDeviceset}${extras.length ? ` and ${extras.join(', ')}` : ''}${saved.backup ? ' (backup kept)' : ''}`);
+    } catch (e) {
+      toast('error', `Remove failed, library unchanged: ${describeError(e)}`);
+    } finally {
+      setRemoving(false);
+      setRemoval(null);
+    }
+  }
+
   async function onSaveCategories(next: Category[]) {
     setCategories(next);
     setSettingsOpen(false);
@@ -226,9 +258,10 @@ export default function App() {
         />
       )}
 
-      {library && <LibraryTable items={library.devicesets} />}
+      {library && <LibraryTable items={library.devicesets} onRemove={onRemoveRequest} />}
 
       {conflictPlan && <ConflictDialog conflicts={conflictPlan.conflicts} onCancel={() => setConflictPlan(null)} onConfirm={(r) => void merge(r)} />}
+      {removal && <RemoveDialog plan={removal} busy={removing} onCancel={() => setRemoval(null)} onConfirm={(o) => void removeDeviceset(o)} />}
       {settingsOpen && <SettingsPanel categories={categories} onSave={(c) => void onSaveCategories(c)} onClose={() => setSettingsOpen(false)} />}
       <Toasts items={toasts} onDismiss={(id) => setToasts((t) => t.filter((x) => x.id !== id))} />
     </main>

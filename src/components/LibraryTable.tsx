@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { DevicesetSummary } from '../core/lbr/document.ts';
 
-export function LibraryTable({ items }: { items: DevicesetSummary[] }) {
+export function LibraryTable({ items, onRemove }: { items: DevicesetSummary[]; onRemove: (name: string) => void }) {
   const [filter, setFilter] = useState('');
   const shown = useMemo(() => {
     const q = filter.trim().toLowerCase();
@@ -24,6 +24,7 @@ export function LibraryTable({ items }: { items: DevicesetSummary[] }) {
               <th>Prefix</th>
               <th>Package</th>
               <th>LCSC</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -33,11 +34,16 @@ export function LibraryTable({ items }: { items: DevicesetSummary[] }) {
                 <td>{d.prefix}</td>
                 <td>{d.packages.join(', ')}</td>
                 <td>{d.lcsc.join(', ')}</td>
+                <td>
+                  <button className="small" onClick={() => onRemove(d.name)} title={`Remove ${d.name} from the library`}>
+                    Remove
+                  </button>
+                </td>
               </tr>
             ))}
             {shown.length === 0 && (
               <tr>
-                <td colSpan={4} className="muted">
+                <td colSpan={5} className="muted">
                   {items.length === 0 ? 'The library is empty.' : 'No match.'}
                 </td>
               </tr>

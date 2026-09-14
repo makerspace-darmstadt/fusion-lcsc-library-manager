@@ -9,6 +9,7 @@
  *   npm run convert -- C3131 --category resistor   # override the auto-suggested category
  *   npm run convert -- C3131 --into my.lbr         # merge into an existing library (.bak kept)
  *   npm run convert -- C3131 --into my.lbr --on-conflict rename|reuse
+ *   npm run convert -- --remove CAP_CC0603KRX7R9BB104 --into my.lbr [--keep-unused]   # remove a deviceset
  *   npm run convert -- --fixture fixtures/easyeda/C3131.json …   # offline, from a committed fixture
  */
 
@@ -23,6 +24,7 @@ import { parseComponent } from '../src/core/easyeda/parse.ts';
 import type { PartModel } from '../src/core/easyeda/types.ts';
 import { parseLbr, serializeLbr } from '../src/core/lbr/document.ts';
 import { applyMerge, planMerge, type Resolution } from '../src/core/lbr/merge.ts';
+import { applyRemoval, planRemoval } from '../src/core/lbr/remove.ts';
 import { saveLbrSafely, type FileSystemLike } from '../src/core/lbr/save.ts';
 import { buildStandaloneLbr } from '../src/core/lbr/standalone.ts';
 import { copyFile, rename, rm, stat } from 'node:fs/promises';
@@ -39,6 +41,8 @@ interface Args {
   lbr?: string;
   into?: string;
   onConflict?: Resolution;
+  remove?: string;
+  keepUnused: boolean;
   category?: string;
   help: boolean;
 }
@@ -57,7 +61,7 @@ const nodeFs: FileSystemLike = {
 };
 
 function parseArgs(argv: string[]): Args {
-  const a: Args = { help: false, xml: false };
+  const a: Args = { help: false, xml: false, keepUnused: false };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t === '--out') a.out = argv[++i];
@@ -65,6 +69,8 @@ function parseArgs(argv: string[]): Args {
     else if (t === '--xml') a.xml = true;
     else if (t === '--lbr') a.lbr = argv[++i];
     else if (t === '--into') a.into = argv[++i];
+    else if (t === '--remove') a.remove = argv[++i];
+    else if (t === '--keep-unused') a.keepUnused = true;
     else if (t === '--on-conflict') {
       const v = argv[++i];
       if (v !== 'rename' && v !== 'reuse') throw new Error('--on-conflict expects rename or reuse');
@@ -98,8 +104,26 @@ async function loadModel(args: Args): Promise<PartModel> {
 
 async function main(): Promise<number> {
   const args = parseArgs(process.argv.slice(2));
+  if (args.remove) {
+    if (!args.into) throw new Error('--remove needs --into <library.lbr>');
+    const doc = parseLbr(await readFile(args.into, 'utf8'));
+    const plan = planRemoval(doc, args.remove);
+    const r = applyRemoval(doc, args.remove, { removeOrphans: !args.keepUnused });
+    const saved = await saveLbrSafely(nodeFs, args.into, serializeLbr(doc));
+    process.stderr.write(
+      `Removed deviceset ${r.removedDeviceset} from ${saved.path}` +
+        (r.removedPackages.length ? `; packages removed: ${r.removedPackages.join(', ')}` : '') +
+        (r.removedSymbols.length ? `; symbols removed: ${r.removedSymbols.join(', ')}` : '') +
+        (args.keepUnused && (plan.orphanPackages.length || plan.orphanSymbols.length)
+          ? `; kept unused: ${[...plan.orphanPackages, ...plan.orphanSymbols].join(', ')}`
+          : '') +
+        (saved.backup ? `; backup: ${saved.backup}` : '') +
+        '\n',
+    );
+    return 0;
+  }
   if (args.help || (!args.id && !args.fixture)) {
-    process.stderr.write('Usage: npm run convert -- <LCSC id> [--out model.json] [--xml] [--lbr new.lbr] [--into existing.lbr [--on-conflict rename|reuse]] [--category id] [--fixture path.json]\n');
+    process.stderr.write('Usage: npm run convert -- <LCSC id> [--out model.json] [--xml] [--lbr new.lbr] [--into existing.lbr [--on-conflict rename|reuse]] [--category id] [--fixture path.json]\n       npm run convert -- --remove <deviceset> --into existing.lbr [--keep-unused]\n');
     return args.help ? 0 : 2;
   }
   const model = await loadModel(args);

@@ -17,7 +17,9 @@ device carries the part number in an `LCSC` attribute (plus `MANUFACTURER`/`MPN`
    content differs you choose between reusing the existing element or importing it as `NAME_2`. Parts whose
    `LCSC` attribute is already present are skipped. The previous file version is kept as `<file>.bak`.
 
-The table at the bottom lists every deviceset in the library with its package and LCSC number.
+The table at the bottom lists every deviceset in the library with its package and LCSC number. **Remove**
+deletes a deviceset again; the confirmation offers to also drop packages and symbols that no other deviceset
+uses. A `.bak` of the previous version is kept.
 
 Out of scope for v1: 3D models, managed/cloud libraries, keyword search, editing existing parts.
 
@@ -59,6 +61,7 @@ npm run convert -- C3131 --xml                             # Eagle package/symbo
 npm run convert -- C3131 --lbr C3131.lbr                   # standalone library to open in Fusion
 npm run convert -- C3131 --into my.lbr                     # merge into an existing library (my.lbr.bak kept)
 npm run convert -- C3131 --into my.lbr --on-conflict rename # resolve package/symbol collisions (rename|reuse)
+npm run convert -- --remove CAP_CC0603KRX7R9BB104 --into my.lbr [--keep-unused]  # remove a deviceset
 npm run convert -- C3131 --category resistor               # override the suggested category
 npm run convert -- --fixture fixtures/easyeda/C14663.json  # offline from a committed fixture
 ```
