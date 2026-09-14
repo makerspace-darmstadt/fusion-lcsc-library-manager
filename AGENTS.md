@@ -52,6 +52,9 @@ Working notes for anyone (human or agent) continuing this project. Keep it curre
 | 27 | Deviceset name taken by a *different* part (no matching LCSC) → imported as `NAME_2` automatically | The brief only covers the LCSC-match case; renaming never loses data and is reported in the merge result. |
 | 28 | Safe save removes the original after copying it to `.bak`, then renames `.tmp` into place | Windows cannot rename over an existing file; the `.bak` copy is the safety net, and the temp file is read back and verified before the original is touched. |
 | 29 | `<packages3d>` and any other unknown library child are preserved in place; new containers are inserted in canonical order before them | Brief §5. |
+| 30 | Only `src/tauri/*` imports Tauri plugins; the UI re-parses the library text for every dry run/merge | Keeps `src/core` pure and guarantees the merge always starts from the on-disk state. |
+| 31 | `tauri-plugin-http` built with `unsafe-headers` | Without it the plugin drops the `Referer` header with a runtime warning (EasyEDA currently answers without it, but the brief asks for it). |
+| 32 | The reference `.lbr` skeleton is bundled into the UI via Vite `?raw` import of `fixtures/lbr/reference.lbr` | One source of truth for CLI and app. |
 
 ## Fixtures (`fixtures/easyeda/`)
 
@@ -95,7 +98,10 @@ All fetched on 2026-09-14 from `https://easyeda.com/api/products/<id>/components
 - [x] **M3** merge (`src/core/lbr/merge.ts`), round-trip test, collision handling (identical → reuse,
       differing → caller resolves reuse/rename), `.tmp` + `.bak` safe save with injectable fs
       (`src/core/lbr/save.ts`), CLI `--into existing.lbr [--on-conflict rename|reuse]`. 97 tests.
-- [ ] **M4** UI.
+- [x] **M4** UI (`src/App.tsx`, `src/components/*`, Tauri adapters in `src/tauri/*`): open/new library,
+      fetch, part card with SVG previews, category dropdown (auto-suggested), warnings, conflict dialog,
+      deviceset table with filter, category settings panel, last-opened library persisted via plugin-store.
+      Verified: `npm run build`, `npm run tauri dev` launches (UI not exercised by automated tests).
 - [ ] **M5** packaging + CI.
 
 ## Known limitations
