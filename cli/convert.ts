@@ -1,32 +1,49 @@
 #!/usr/bin/env node
 /**
- * Dev CLI: fetch an LCSC part from EasyEDA and print the intermediate model as JSON.
+ * Dev CLI.
  *
- *   npm run convert -- C3131                 # model JSON to stdout, warnings to stderr
- *   npm run convert -- C3131 --out part.json # write the model to a file
- *   npm run convert -- --fixture fixtures/easyeda/C3131.json  # offline, from a committed fixture
+ *   npm run convert -- C3131                       # model JSON to stdout, warnings to stderr
+ *   npm run convert -- C3131 --out part.json       # write the model to a file
+ *   npm run convert -- C3131 --xml                 # print the Eagle fragments (package/symbol/deviceset)
+ *   npm run convert -- C3131 --lbr new.lbr         # write a standalone library (skeleton: fixtures/lbr/reference.lbr)
+ *   npm run convert -- C3131 --category resistor   # override the auto-suggested category
+ *   npm run convert -- --fixture fixtures/easyeda/C3131.json …   # offline, from a committed fixture
  */
 
 import { readFile, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { DEFAULT_CATEGORIES, suggestCategory } from '../src/core/categories.ts';
+import { convertPart, fragmentsToString } from '../src/core/eagle/convert.ts';
+import { EasyEdaError, normaliseLcscId } from '../src/core/easyeda/errors.ts';
 import { EasyEdaClient } from '../src/core/easyeda/fetch.ts';
 import { parseComponent } from '../src/core/easyeda/parse.ts';
-import { EasyEdaError, normaliseLcscId } from '../src/core/easyeda/errors.ts';
 import type { PartModel } from '../src/core/easyeda/types.ts';
+import { buildStandaloneLbr } from '../src/core/lbr/standalone.ts';
 import type { ConversionWarning } from '../src/core/warnings.ts';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+export const REFERENCE_LBR = join(ROOT, 'fixtures', 'lbr', 'reference.lbr');
 
 interface Args {
   id?: string;
   out?: string;
   fixture?: string;
+  xml: boolean;
+  lbr?: string;
+  category?: string;
   help: boolean;
 }
 
 function parseArgs(argv: string[]): Args {
-  const a: Args = { help: false };
+  const a: Args = { help: false, xml: false };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t === '--out') a.out = argv[++i];
     else if (t === '--fixture') a.fixture = argv[++i];
+    else if (t === '--xml') a.xml = true;
+    else if (t === '--lbr') a.lbr = argv[++i];
+    else if (t === '--category') a.category = argv[++i];
     else if (t === '--help' || t === '-h') a.help = true;
     else if (t.startsWith('--')) throw new Error(`Unknown option ${t}`);
     else a.id = t;
@@ -55,19 +72,37 @@ async function loadModel(args: Args): Promise<PartModel> {
 async function main(): Promise<number> {
   const args = parseArgs(process.argv.slice(2));
   if (args.help || (!args.id && !args.fixture)) {
-    process.stderr.write('Usage: npm run convert -- <LCSC id> [--out file.json] [--fixture path.json]\n');
+    process.stderr.write('Usage: npm run convert -- <LCSC id> [--out model.json] [--xml] [--lbr new.lbr] [--category id] [--fixture path.json]\n');
     return args.help ? 0 : 2;
   }
   const model = await loadModel(args);
-  printWarnings(model.warnings);
-  const text = JSON.stringify(model, null, 2);
-  if (args.out) {
-    await writeFile(args.out, text);
-    process.stderr.write(`Wrote ${args.out}\n`);
-  } else {
-    process.stdout.write(text + '\n');
+  if (!args.xml && !args.lbr) {
+    printWarnings(model.warnings);
+    const text = JSON.stringify(model, null, 2);
+    if (args.out) {
+      await writeFile(args.out, text);
+      process.stderr.write(`Wrote ${args.out}\n`);
+    } else process.stdout.write(text + '\n');
+    return model.warnings.some((w) => w.severity === 'error') ? 1 : 0;
   }
-  return model.warnings.some((w) => w.severity === 'error') ? 1 : 0;
+
+  const wanted = args.category?.toLowerCase();
+  const category = wanted ? DEFAULT_CATEGORIES.find((c) => c.id === wanted) : suggestCategory(model.info);
+  if (!category) throw new Error(`Unknown category "${args.category}". Known: ${DEFAULT_CATEGORIES.map((c) => c.id).join(', ')}`);
+  process.stderr.write(`Category: ${category.name}\n`);
+  const converted = convertPart(model, category);
+  printWarnings(converted.warnings);
+  if (args.xml) process.stdout.write(fragmentsToString(converted));
+  if (args.lbr) {
+    if (converted.hasErrors) {
+      process.stderr.write('Conversion has errors; not writing the library.\n');
+      return 1;
+    }
+    const reference = await readFile(REFERENCE_LBR, 'utf8');
+    await writeFile(args.lbr, buildStandaloneLbr(reference, [converted]));
+    process.stderr.write(`Wrote ${args.lbr} (${converted.devicesetName}, package ${converted.packageName})\n`);
+  }
+  return converted.hasErrors ? 1 : 0;
 }
 
 main()

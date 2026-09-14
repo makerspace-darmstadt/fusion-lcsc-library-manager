@@ -1,0 +1,66 @@
+<!-- info RECT_CORNER_RADIUS: Rounded rectangle corners are drawn square in the symbol -->
+<!-- info SYMBOL_SHIFTED: Symbol shifted by (0, 1.27) mm to put its pins on the 2.54 mm grid -->
+<package name="HDR-TH_2P-P2.54-V-M-1">
+<description>&lt;b&gt;HDR-TH_2P-P2.54-V-M-1&lt;/b&gt;&lt;br&gt;
+Imported from EasyEDA/LCSC</description>
+<pad name="2" x="1.27" y="0" drill="1.1" diameter="1.8"/>
+<pad name="1" x="-1.27" y="0" drill="1.1" diameter="1.8" shape="square"/>
+<circle x="-2.54" y="-1.27" radius="0.03" width="0.06" layer="51"/>
+<polygon width="0.0254" layer="51">
+<vertex x="-2.54" y="-1.27"/>
+<vertex x="-2.54" y="1.27"/>
+<vertex x="2.54" y="1.27"/>
+<vertex x="2.54" y="-1.27"/>
+</polygon>
+<wire x1="-2.54" y1="-1.27" x2="2.54" y2="-1.27" width="0.254" layer="21"/>
+<wire x1="2.54" y1="-1.27" x2="2.54" y2="1.27" width="0.254" layer="21"/>
+<wire x1="2.54" y1="1.27" x2="-2.54" y2="1.27" width="0.254" layer="21"/>
+<wire x1="-2.54" y1="1.27" x2="-2.54" y2="-1.27" width="0.254" layer="21"/>
+<polygon width="0.0254" layer="51">
+<vertex x="-1.59" y="0.32"/>
+<vertex x="-0.95" y="0.32"/>
+<vertex x="-0.95" y="-0.32"/>
+<vertex x="-1.59" y="-0.32"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="0.95" y="0.32"/>
+<vertex x="1.59" y="0.32"/>
+<vertex x="1.59" y="-0.32"/>
+<vertex x="0.95" y="-0.32"/>
+</polygon>
+<text x="0" y="1.77" size="1.27" layer="25" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-1.8" size="1.27" layer="27" align="top-center">&gt;VALUE</text>
+</package>
+<symbol name="CON_210S-1_2P_L_11.6MMGOLD-PLATED_BLACK">
+<wire x1="-2.54" y1="5.08" x2="5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="5.08" y1="5.08" x2="5.08" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-2.54" x2="-2.54" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-2.54" x2="-2.54" y2="5.08" width="0.254" layer="94"/>
+<circle x="-1.778" y="4.318" radius="0.381" width="0" layer="94"/>
+<text x="-2.54" y="6.35" size="1.778" layer="95">&gt;NAME</text>
+<text x="-2.54" y="-3.81" size="1.778" layer="96" align="top-left">&gt;VALUE</text>
+<pin name="1" x="-5.08" y="2.54" visible="both" length="short" direction="pas"/>
+<pin name="2" x="-5.08" y="0" visible="both" length="short" direction="pas"/>
+</symbol>
+<deviceset name="CON_210S-1_2P_L_11.6MMGOLD-PLATED_BLACK" prefix="J">
+<description>210S-1*2P L=11.6MMGold-plated black — LCSC C124375 — Ckmtw B-2100S02P-A110. Keywords: connector, header, socket, pin headers
+&lt;a href="https://lcsc.com/product-detail/Male-Header_Headers-Pins-1-2P-2-54mm-Straight-line_C124375.html"&gt;LCSC product page&lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="CON_210S-1_2P_L_11.6MMGOLD-PLATED_BLACK" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="HDR-TH_2P-P2.54-V-M-1">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="LCSC" value="C124375" constant="no"/>
+<attribute name="MANUFACTURER" value="Ckmtw" constant="no"/>
+<attribute name="MPN" value="B-2100S02P-A110" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>

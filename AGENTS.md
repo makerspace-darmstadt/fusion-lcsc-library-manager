@@ -39,6 +39,15 @@ Working notes for anyone (human or agent) continuing this project. Keep it curre
 | 14 | The `/svgs` endpoint needs a full browser User-Agent | A bare `Mozilla/5.0` is answered with HTTP 403 by the CDN. Same headers are used for both endpoints. |
 | 15 | No datasheet URL: the API does not return one | The part card links to the LCSC product page (`lcsc.url`) instead. |
 | 16 | fs capability scope is `**` | The library file lives wherever the user keeps it, and the last-opened path is re-read at startup without a dialog. |
+| 17 | Eagle `long` THT pads use `diameter = min(width, height)` (brief said max) | Eagle's long pad is 2:1 with `diameter` as the short axis; using max would double the pad. Non-2:1 ovals get `PAD_ASPECT`. |
+| 18 | Slots: `long` pad + Milling (46) wire of drill width along the slot centre line | Eagle has no slotted pads; the wire documents the slot for fabrication (`SLOT_PAD` warning). |
+| 19 | Symbol name = deviceset name (`CAT_TITLE`), multi-unit `CAT_TITLE_A`, `_B`; package name = sanitised EasyEDA package title | Symbols are part-specific, packages are shared (every 0603 uses `C0603`), so collisions only occur where reuse is intended. |
+| 20 | One pin may connect to several pads (`pad="57 58"`) when pad numbers repeat; repeated pad numbers are renamed `N_2` | Eagle requires unique pad names but allows multi-pad connects. |
+| 21 | Second pin with an already-used pin number is left unconnected (`DUPLICATE_PIN_NUMBER`), a pin without pad is an error (`PIN_WITHOUT_PAD`) | Brief §5.3; C138392 is the fixture for this. |
+| 22 | Solid regions become polygons with width 0.0254 mm (1 mil) | Eagle grows polygons by half the width; 1 mil keeps the outline exact. |
+| 23 | `>NAME`/`>VALUE` are placed by the emitter (package: centred above/below the bbox, size 1.27; symbol: top-left / bottom-left of the body, size 1.778) | EasyEDA data carries no name/value texts. |
+| 24 | Region-type warnings only on copper layers | On tDocu a "cutout" region is just a drawing. |
+| 25 | Gate positions in the deviceset: gate *i* at x = i × 25.4 | Purely cosmetic in Fusion's device editor. |
 
 ## Fixtures (`fixtures/easyeda/`)
 
@@ -76,8 +85,9 @@ All fetched on 2026-09-14 from `https://easyeda.com/api/products/<id>/components
 
 ## Milestone status
 
-- [x] **M1** scaffold + fetch + parse + CLI + fixtures + parser tests (44 tests).
-- [ ] **M2** Eagle emitter, golden tests, standalone `.lbr`, `VALIDATION.md`.
+- [x] **M1** scaffold + fetch + parse + CLI + fixtures + parser tests.
+- [x] **M2** Eagle emitter (`src/core/eagle`), golden tests (`tests/golden/*.xml`, regenerate with
+      `UPDATE_GOLDEN=1 npm test`), standalone `.lbr` via `--lbr`, `VALIDATION.md`. 81 tests.
 - [ ] **M3** merge with round-trip test, collisions, `.bak`/`.tmp`.
 - [ ] **M4** UI.
 - [ ] **M5** packaging + CI.

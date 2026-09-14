@@ -1,0 +1,188 @@
+<!-- warning PIN_OFF_GRID: Pin 2 (1IN-) at (-10.16, 3.81) mm is off the 2.54 mm grid -->
+<!-- info MULTI_UNIT: Part has 2 units; one gate per unit (A, B, …) -->
+<package name="SOIC-8_L5.0-W4.0-P1.27-LS6.0-BL">
+<description>&lt;b&gt;SOIC-8_L5.0-W4.0-P1.27-LS6.0-BL&lt;/b&gt;&lt;br&gt;
+Imported from EasyEDA/LCSC</description>
+<smd name="1" x="-1.905" y="-2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<smd name="2" x="-0.635" y="-2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<smd name="3" x="0.635" y="-2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<smd name="4" x="1.905" y="-2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<smd name="8" x="-1.905" y="2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<smd name="7" x="-0.635" y="2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<smd name="6" x="0.635" y="2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<smd name="5" x="1.905" y="2.7051" dx="0.5684" dy="1.9502" layer="1" roundness="100"/>
+<circle x="-2.413" y="-3" radius="0.03" width="0.06" layer="51"/>
+<circle x="-1.905" y="-3.4" radius="0.1501" width="0.3" layer="51"/>
+<polygon width="0.0254" layer="51">
+<vertex x="1.7" y="1.94"/>
+<vertex x="1.7" y="2.175"/>
+<vertex x="2.11" y="2.175"/>
+<vertex x="2.11" y="1.94"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="1.7" y="2.165"/>
+<vertex x="1.7" y="3"/>
+<vertex x="2.11" y="3"/>
+<vertex x="2.11" y="2.165"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="0.43" y="1.94"/>
+<vertex x="0.43" y="2.175"/>
+<vertex x="0.84" y="2.175"/>
+<vertex x="0.84" y="1.94"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="0.43" y="2.165"/>
+<vertex x="0.43" y="3"/>
+<vertex x="0.84" y="3"/>
+<vertex x="0.84" y="2.165"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-0.84" y="1.94"/>
+<vertex x="-0.84" y="2.175"/>
+<vertex x="-0.43" y="2.175"/>
+<vertex x="-0.43" y="1.94"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-0.84" y="2.165"/>
+<vertex x="-0.84" y="3"/>
+<vertex x="-0.43" y="3"/>
+<vertex x="-0.43" y="2.165"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-2.11" y="1.94"/>
+<vertex x="-2.11" y="2.175"/>
+<vertex x="-1.7" y="2.175"/>
+<vertex x="-1.7" y="1.94"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-2.11" y="2.165"/>
+<vertex x="-2.11" y="3"/>
+<vertex x="-1.7" y="3"/>
+<vertex x="-1.7" y="2.165"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="1.7" y="-2.175"/>
+<vertex x="1.7" y="-1.94"/>
+<vertex x="2.11" y="-1.94"/>
+<vertex x="2.11" y="-2.175"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="1.7" y="-3"/>
+<vertex x="1.7" y="-2.165"/>
+<vertex x="2.11" y="-2.165"/>
+<vertex x="2.11" y="-3"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="0.43" y="-2.175"/>
+<vertex x="0.43" y="-1.94"/>
+<vertex x="0.84" y="-1.94"/>
+<vertex x="0.84" y="-2.175"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="0.43" y="-3"/>
+<vertex x="0.43" y="-2.165"/>
+<vertex x="0.84" y="-2.165"/>
+<vertex x="0.84" y="-3"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-0.84" y="-2.175"/>
+<vertex x="-0.84" y="-1.94"/>
+<vertex x="-0.43" y="-1.94"/>
+<vertex x="-0.43" y="-2.175"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-0.84" y="-3"/>
+<vertex x="-0.84" y="-2.165"/>
+<vertex x="-0.43" y="-2.165"/>
+<vertex x="-0.43" y="-3"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-2.11" y="-2.175"/>
+<vertex x="-2.11" y="-1.94"/>
+<vertex x="-1.7" y="-1.94"/>
+<vertex x="-1.7" y="-2.175"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-2.11" y="-3"/>
+<vertex x="-2.11" y="-2.165"/>
+<vertex x="-1.7" y="-2.165"/>
+<vertex x="-1.7" y="-3"/>
+</polygon>
+<polygon width="0.0254" layer="51">
+<vertex x="-2.5" y="-2"/>
+<vertex x="-2.5" y="2"/>
+<vertex x="2.5" y="2"/>
+<vertex x="2.5" y="-2"/>
+</polygon>
+<wire x1="-2.5" y1="-1.5" x2="2.5" y2="-1.5" width="0.254" layer="21"/>
+<wire x1="-2.5" y1="1.5" x2="2.5" y2="1.5" width="0.254" layer="21"/>
+<wire x1="-2.5" y1="-1.5" x2="-2.5" y2="-0.7266" width="0.254" layer="21"/>
+<wire x1="-2.5" y1="1.5" x2="-2.5" y2="0.7263" width="0.254" layer="21"/>
+<wire x1="2.5" y1="1.5" x2="2.5" y2="-1.5" width="0.254" layer="21"/>
+<circle x="-1.778" y="-1.016" radius="0.1501" width="0.3" layer="21"/>
+<wire x1="-2.5" y1="-0.7266" x2="-2.4951" y2="0.7263" width="0.254" layer="21" curve="173.342"/>
+<text x="0" y="4.18" size="1.27" layer="25" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-4.18" size="1.27" layer="27" align="top-center">&gt;VALUE</text>
+</package>
+<symbol name="IC_TL072CDT_A">
+<wire x1="-5.08" y1="-5.08" x2="5.08" y2="0" width="0.254" layer="94"/>
+<wire x1="5.08" y1="0" x2="-5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-4.064" y1="2.54" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-4.064" y1="-2.54" x2="-2.54" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-3.302" y1="-1.778" x2="-3.302" y2="-3.302" width="0.254" layer="94"/>
+<wire x1="0" y1="-2.54" x2="0" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="0" y1="5.08" x2="0" y2="2.54" width="0.254" layer="94"/>
+<text x="-5.08" y="6.35" size="1.778" layer="95">&gt;NAME</text>
+<text x="-5.08" y="-6.35" size="1.778" layer="96" align="top-left">&gt;VALUE</text>
+<pin name="1IN+" x="-10.16" y="-2.54" visible="pad" length="middle" direction="pas"/>
+<pin name="1IN-" x="-10.16" y="3.81" visible="pad" length="middle" direction="pas"/>
+<pin name="OUT1" x="10.16" y="0" visible="pad" length="middle" direction="out" rot="R180"/>
+<pin name="VCC-" x="0" y="-10.16" visible="pad" length="middle" direction="pwr" rot="R90"/>
+<pin name="VCC+" x="0" y="10.16" visible="pad" length="middle" direction="pwr" rot="R270"/>
+</symbol>
+<symbol name="IC_TL072CDT_B">
+<wire x1="-5.08" y1="-5.08" x2="5.08" y2="0" width="0.254" layer="94"/>
+<wire x1="5.08" y1="0" x2="-5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-4.064" y1="2.54" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-4.064" y1="-2.54" x2="-2.54" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-3.302" y1="-1.778" x2="-3.302" y2="-3.302" width="0.254" layer="94"/>
+<wire x1="0" y1="-2.54" x2="0" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="0" y1="5.08" x2="0" y2="2.54" width="0.254" layer="94"/>
+<text x="-5.08" y="6.35" size="1.778" layer="95">&gt;NAME</text>
+<text x="-5.08" y="-6.35" size="1.778" layer="96" align="top-left">&gt;VALUE</text>
+<pin name="2IN+" x="-10.16" y="-2.54" visible="pad" length="middle" direction="pas"/>
+<pin name="2IN-" x="-10.16" y="2.54" visible="pad" length="middle" direction="pas"/>
+<pin name="2OUT" x="10.16" y="0" visible="pad" length="middle" direction="out" rot="R180"/>
+</symbol>
+<deviceset name="IC_TL072CDT" prefix="U">
+<description>TL072CDT — LCSC C6961 — ST TL072CDT. Keywords: ic, integrated circuit, fet inputamplifiers
+&lt;a href="https://lcsc.com/product-detail/FET-InputAmplifiers_STMicroelectronics_TL072CDT_TL072CDT_C6961.html"&gt;LCSC product page&lt;/a&gt;</description>
+<gates>
+<gate name="A" symbol="IC_TL072CDT_A" x="0" y="0"/>
+<gate name="B" symbol="IC_TL072CDT_B" x="25.4" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOIC-8_L5.0-W4.0-P1.27-LS6.0-BL">
+<connects>
+<connect gate="A" pin="1IN+" pad="3"/>
+<connect gate="A" pin="1IN-" pad="2"/>
+<connect gate="A" pin="OUT1" pad="1"/>
+<connect gate="A" pin="VCC-" pad="4"/>
+<connect gate="A" pin="VCC+" pad="8"/>
+<connect gate="B" pin="2IN+" pad="5"/>
+<connect gate="B" pin="2IN-" pad="6"/>
+<connect gate="B" pin="2OUT" pad="7"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="LCSC" value="C6961" constant="no"/>
+<attribute name="MANUFACTURER" value="ST" constant="no"/>
+<attribute name="MPN" value="TL072CDT" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>

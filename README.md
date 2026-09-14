@@ -21,8 +21,13 @@ npm run tauri dev      # desktop app
 ```sh
 npm run convert -- C3131                                   # print the intermediate model as JSON
 npm run convert -- C3131 --out model.json
+npm run convert -- C3131 --xml                             # Eagle package/symbol/deviceset fragments
+npm run convert -- C3131 --lbr C3131.lbr                   # standalone library to open in Fusion
+npm run convert -- C3131 --category resistor               # override the suggested category
 npm run convert -- --fixture fixtures/easyeda/C14663.json  # offline from a committed fixture
 ```
+
+`VALIDATION.md` lists what to check in Fusion after opening a generated library.
 
 Warnings go to stderr; exit code 1 when the conversion produced errors.
 
