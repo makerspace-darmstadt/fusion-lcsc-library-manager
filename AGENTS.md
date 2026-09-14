@@ -102,7 +102,17 @@ All fetched on 2026-09-14 from `https://easyeda.com/api/products/<id>/components
       fetch, part card with SVG previews, category dropdown (auto-suggested), warnings, conflict dialog,
       deviceset table with filter, category settings panel, last-opened library persisted via plugin-store.
       Verified: `npm run build`, `npm run tauri dev` launches (UI not exercised by automated tests).
-- [ ] **M5** packaging + CI.
+- [x] **M5** packaging: `npm run tauri build` produces `src-tauri/target/release/bundle/dmg/lcsc-lbr-manager_0.1.0_aarch64.dmg`
+      on macOS (verified 2026-09-14; the DMG step once failed transiently in `bundle_dmg.sh` and succeeded on
+      rerun with `--bundles dmg`). `.github/workflows/release.yml` builds macOS arm64 + x86_64 and Windows
+      (msi/nsis) on `v*` tags via `tauri-apps/tauri-action` (unsigned, draft release); `ci.yml` runs
+      typecheck/tests/build on every push. README has the Gatekeeper workaround.
+
+## Next steps / ideas
+
+- Validate the generated geometry in Fusion with `VALIDATION.md` (nothing has been opened in Fusion yet).
+- Windows build has only been exercised through the workflow definition, not run locally.
+- Consider batch import (list of part numbers) and a "re-import" action for existing devicesets.
 
 ## Known limitations
 
