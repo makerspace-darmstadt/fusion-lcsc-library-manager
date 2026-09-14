@@ -48,7 +48,8 @@ jobs:
         with:
           workspaces: './src-tauri -> target'
       - run: npm ci
-      # Unsigned builds: no APPLE_* / TAURI_SIGNING_* secrets are required.
+      # No code signing for now: none of APPLE_CERTIFICATE / APPLE_ID / TAURI_SIGNING_PRIVATE_KEY are set,
+      # so tauri-action produces unsigned .dmg / .msi / -setup.exe bundles.
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

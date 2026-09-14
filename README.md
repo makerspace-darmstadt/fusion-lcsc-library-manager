@@ -73,8 +73,10 @@ conventions, decisions and the milestone status.
 
 ### Releases
 
-Pushing a tag `v*` runs `.github/workflows/release.yml`, which tests on Linux and builds unsigned bundles for
-macOS (Apple Silicon and Intel) and Windows with `tauri-apps/tauri-action`, attached to a draft GitHub release.
+`.github/workflows/ci.yml` runs typecheck, tests and the frontend build on every push to `main` and on pull
+requests. Pushing a tag `v*` runs `.github/workflows/release.yml`, which tests on Linux and builds unsigned
+bundles for macOS (Apple Silicon and Intel) and Windows with `tauri-apps/tauri-action`, attached to a draft
+GitHub release. Code signing is intentionally not configured yet.
 
 ## Layout
 
