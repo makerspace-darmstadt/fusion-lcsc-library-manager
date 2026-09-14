@@ -16,8 +16,9 @@ Working notes for anyone (human or agent) continuing this project. Keep it curre
   shapes and layers.
 - Numbers are rounded to 4 decimals (`round()` in `src/core/units.ts`); `-0` is normalised to `0`.
 - Tests: Vitest, `tests/**/*.test.ts`. Every non-obvious geometry rule has a hand-checked expected value.
-- Commit at the end of each milestone. Commit signing is disabled for this repo (`git config commit.gpgsign
-  false`) because the 1Password signer is not available in non-interactive shells.
+- Commit at the end of each milestone. Commits are signed (1Password SSH signing, global git config); never
+  disable signing. If the signer cannot prompt in a non-interactive shell, leave the changes staged and let
+  the user commit.
 
 ## Decisions (with reasons)
 
