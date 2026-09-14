@@ -24,6 +24,8 @@ npm run convert -- C3131 --out model.json
 npm run convert -- C3131 --xml                             # Eagle package/symbol/deviceset fragments
 npm run convert -- C3131 --lbr C3131.lbr                   # standalone library to open in Fusion
 npm run convert -- C3131 --category resistor               # override the suggested category
+npm run convert -- C3131 --into my.lbr                     # merge into an existing library (my.lbr.bak kept)
+npm run convert -- C3131 --into my.lbr --on-conflict rename # resolve package/symbol collisions (rename|reuse)
 npm run convert -- --fixture fixtures/easyeda/C14663.json  # offline from a committed fixture
 ```
 

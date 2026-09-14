@@ -48,6 +48,10 @@ Working notes for anyone (human or agent) continuing this project. Keep it curre
 | 23 | `>NAME`/`>VALUE` are placed by the emitter (package: centred above/below the bbox, size 1.27; symbol: top-left / bottom-left of the body, size 1.778) | EasyEDA data carries no name/value texts. |
 | 24 | Region-type warnings only on copper layers | On tDocu a "cutout" region is just a drawing. |
 | 25 | Gate positions in the deviceset: gate *i* at x = i × 25.4 | Purely cosmetic in Fusion's device editor. |
+| 26 | "Identical after normalisation" = same canonical string: sorted attributes, numbers normalised (`0.70` = `0.7`), whitespace-collapsed text, children in order | Insensitive to formatting, sensitive to any geometry/attribute change. |
+| 27 | Deviceset name taken by a *different* part (no matching LCSC) → imported as `NAME_2` automatically | The brief only covers the LCSC-match case; renaming never loses data and is reported in the merge result. |
+| 28 | Safe save removes the original after copying it to `.bak`, then renames `.tmp` into place | Windows cannot rename over an existing file; the `.bak` copy is the safety net, and the temp file is read back and verified before the original is touched. |
+| 29 | `<packages3d>` and any other unknown library child are preserved in place; new containers are inserted in canonical order before them | Brief §5. |
 
 ## Fixtures (`fixtures/easyeda/`)
 
@@ -88,7 +92,9 @@ All fetched on 2026-09-14 from `https://easyeda.com/api/products/<id>/components
 - [x] **M1** scaffold + fetch + parse + CLI + fixtures + parser tests.
 - [x] **M2** Eagle emitter (`src/core/eagle`), golden tests (`tests/golden/*.xml`, regenerate with
       `UPDATE_GOLDEN=1 npm test`), standalone `.lbr` via `--lbr`, `VALIDATION.md`. 81 tests.
-- [ ] **M3** merge with round-trip test, collisions, `.bak`/`.tmp`.
+- [x] **M3** merge (`src/core/lbr/merge.ts`), round-trip test, collision handling (identical → reuse,
+      differing → caller resolves reuse/rename), `.tmp` + `.bak` safe save with injectable fs
+      (`src/core/lbr/save.ts`), CLI `--into existing.lbr [--on-conflict rename|reuse]`. 97 tests.
 - [ ] **M4** UI.
 - [ ] **M5** packaging + CI.
 

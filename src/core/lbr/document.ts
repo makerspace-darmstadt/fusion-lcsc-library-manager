@@ -26,7 +26,12 @@ export function parseLbr(text: string): Document {
       if (level === 'fatalError' && !fatal) fatal = String(message);
     },
   });
-  const doc = parser.parseFromString(text, 'application/xml');
+  let doc: Document;
+  try {
+    doc = parser.parseFromString(text, 'application/xml');
+  } catch (e) {
+    throw new LbrError(`Not a well-formed XML file: ${(e as Error).message.split('\n')[0]}`);
+  }
   if (fatal) throw new LbrError(`Not a well-formed XML file: ${fatal}`);
   const root = doc.documentElement;
   if (!root || root.tagName !== 'eagle') throw new LbrError('Not an Eagle file (root element is not <eagle>)');
