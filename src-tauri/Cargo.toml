@@ -1,6 +1,6 @@
 [package]
 name = "lcsc-lbr-manager"
-version = "0.0.2"
+version = "0.1.0"
 description = "Fetch LCSC parts and add them to an Autodesk Fusion library"
 authors = ["Makerspace Darmstadt"]
 edition = "2021"

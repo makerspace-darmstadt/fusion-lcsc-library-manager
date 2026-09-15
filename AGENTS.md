@@ -120,7 +120,10 @@ All fetched on 2026-09-14 from `https://easyeda.com/api/products/<id>/components
   `de.makerspace-darmstadt.fusion-lcsc-library-manager`, icon from `src-tauri/icons/icon.svg` (orange IC →
   arrow → blue library stack). Release builds are signed: macOS via tauri-action with `APPLE_*` secrets
   (Developer ID Application, G2, notarized), Windows via `trusted-signing-cli` in `bundle.windows.signCommand`
-  (Azure account `mksp-trusted-signing`, profile `MKSP-Windows-Signature`, endpoint weu). Version is kept in
+  (Azure account `mksp-trusted-signing`, profile `MKSP-Windows-Signature`, endpoint weu). The sign
+  command is the wrapper `src-tauri/sign-windows.ps1` (runs `artifact-signing-cli`, logs to `$RUNNER_TEMP`);
+  a string-form `signCommand` broke on the space-containing description. `windows-signing-check.yml` is a
+  manual diagnostic. v0.1.0 (2026-09-15) is the first signed release. Version is kept in
   sync with the tag (`package.json`, `tauri.conf.json`, `Cargo.toml`).
 
 ## Next steps / ideas
