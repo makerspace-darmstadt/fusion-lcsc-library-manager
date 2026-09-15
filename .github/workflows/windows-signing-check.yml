@@ -1,0 +1,26 @@
+name: Windows signing check
+
+# Manual diagnostic: signs a throwaway copy of a system executable with Azure Artifact Signing using the
+# same arguments as bundle.windows.signCommand, so the tool's real error output is visible in the log.
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+      - name: Install trusted-signing-cli
+        run: cargo install trusted-signing-cli --locked
+      - name: Sign a test file
+        shell: pwsh
+        env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: |
+          Copy-Item "$env:SystemRoot\System32\whoami.exe" "$env:RUNNER_TEMP\test.exe"
+          trusted-signing-cli --version
+          trusted-signing-cli -e https://weu.codesigning.azure.net -a mksp-trusted-signing -c MKSP-Windows-Signature -d "Fusion LCSC Library Manager" "$env:RUNNER_TEMP\test.exe"
+          Get-AuthenticodeSignature "$env:RUNNER_TEMP\test.exe" | Format-List Status, StatusMessage, SignerCertificate
