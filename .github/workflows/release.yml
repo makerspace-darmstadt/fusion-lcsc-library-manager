@@ -48,15 +48,27 @@ jobs:
         with:
           workspaces: './src-tauri -> target'
       - run: npm ci
-      # No code signing for now: none of APPLE_CERTIFICATE / APPLE_ID / TAURI_SIGNING_PRIVATE_KEY are set,
-      # so tauri-action produces unsigned .dmg / .msi / -setup.exe bundles.
+      # Windows: Azure Artifact Signing (Trusted Signing) via tauri's bundle.windows.signCommand.
+      - name: Install trusted-signing-cli
+        if: matrix.platform == 'windows-latest'
+        run: cargo install trusted-signing-cli --locked
+      # macOS: tauri-action signs with the Developer ID certificate and notarizes when the APPLE_* env vars are set.
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'lcsc-lbr-manager ${{ github.ref_name }}'
-          releaseBody: 'Unsigned builds. macOS: run `xattr -dr com.apple.quarantine "/Applications/lcsc-lbr-manager.app"` after copying the app (see README). Windows: accept the SmartScreen prompt.'
+          releaseName: 'Fusion LCSC Library Manager ${{ github.ref_name }}'
+          releaseBody: 'macOS builds are signed with a Developer ID certificate and notarized; Windows installers are signed via Azure Artifact Signing.'
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}

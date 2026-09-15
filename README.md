@@ -1,4 +1,4 @@
-# LCSC → Fusion library manager
+# Fusion LCSC Library Manager
 
 Desktop app (Tauri 2 + React + TypeScript, macOS and Windows) that imports parts from LCSC/JLCPCB part
 numbers into **one** Autodesk Fusion Electronics library (`.lbr`, Eagle 9.x XML). Symbol and footprint data
@@ -23,21 +23,20 @@ uses. A `.bak` of the previous version is kept.
 
 Out of scope for v1: 3D models, managed/cloud libraries, keyword search, editing existing parts.
 
-## Install (unsigned builds)
+## Install
 
-Downloads are on the GitHub Releases page (`.dmg` for macOS, `.msi` / `-setup.exe` for Windows). The
-builds are not code-signed.
+Downloads are on the GitHub Releases page (`.dmg` for macOS, `.msi` / `-setup.exe` for Windows). Release
+builds are code-signed: macOS with an Apple Developer ID certificate and notarized, Windows via Azure
+Artifact Signing (Trusted Signing).
 
-**macOS Gatekeeper.** After copying the app to `/Applications`, macOS refuses to open it ("damaged" or
-"unidentified developer"). Remove the quarantine flag once:
+**Local or unsigned builds** (e.g. from `npm run tauri build` on your own machine) trigger Gatekeeper on
+macOS. Remove the quarantine flag once after copying the app to `/Applications`:
 
 ```sh
-xattr -dr com.apple.quarantine "/Applications/lcsc-lbr-manager.app"
+xattr -dr com.apple.quarantine "/Applications/Fusion LCSC Library Manager.app"
 ```
 
-Alternatively right-click → Open the first time, or allow it under System Settings → Privacy & Security.
-
-**Windows SmartScreen.** Click "More info" → "Run anyway" in the SmartScreen prompt.
+On Windows an unsigned installer shows the SmartScreen prompt: "More info" → "Run anyway".
 
 ## Development
 
@@ -74,9 +73,17 @@ conventions, decisions and the milestone status.
 ### Releases
 
 `.github/workflows/ci.yml` runs typecheck, tests and the frontend build on every push to `main` and on pull
-requests. Pushing a tag `v*` runs `.github/workflows/release.yml`, which tests on Linux and builds unsigned
-bundles for macOS (Apple Silicon and Intel) and Windows with `tauri-apps/tauri-action`, attached to a draft
-GitHub release. Code signing is intentionally not configured yet.
+requests. Pushing a tag `v*` runs `.github/workflows/release.yml`, which tests on Linux and builds signed
+bundles for macOS (Apple Silicon and Intel, notarized) and Windows with `tauri-apps/tauri-action`, attached
+to a draft GitHub release. Keep the version in `package.json`, `src-tauri/tauri.conf.json` and
+`src-tauri/Cargo.toml` equal to the tag.
+
+Signing needs these repository secrets: `APPLE_CERTIFICATE` (base64 `.p12` with the Developer ID Application
+certificate and key), `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`
+(app-specific), `APPLE_TEAM_ID`, and `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET` for a service
+principal with the *Trusted Signing Certificate Profile Signer* role. Endpoint, account and profile for
+Windows are in `bundle.windows.signCommand` of `tauri.conf.json`. The app icon source is
+`src-tauri/icons/icon.svg`; regenerate the sizes with `npm run tauri icon <1024px png>`.
 
 ## Layout
 

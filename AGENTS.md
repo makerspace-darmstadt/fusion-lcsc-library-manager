@@ -116,6 +116,13 @@ All fetched on 2026-09-14 from `https://easyeda.com/api/products/<id>/components
   references. Packages referenced from `<packages3d>` are never removed. Removing a freshly added part
   restores the file byte for byte (tested).
 
+- **Product name / icon / signing** (2026-09-15): product name `Fusion LCSC Library Manager`, identifier
+  `de.makerspace-darmstadt.fusion-lcsc-library-manager`, icon from `src-tauri/icons/icon.svg` (orange IC →
+  arrow → blue library stack). Release builds are signed: macOS via tauri-action with `APPLE_*` secrets
+  (Developer ID Application, G2, notarized), Windows via `trusted-signing-cli` in `bundle.windows.signCommand`
+  (Azure account `mksp-trusted-signing`, profile `MKSP-Windows-Signature`, endpoint weu). Version is kept in
+  sync with the tag (`package.json`, `tauri.conf.json`, `Cargo.toml`).
+
 ## Next steps / ideas
 
 - Validate the generated geometry in Fusion with `VALIDATION.md` (nothing has been opened in Fusion yet).

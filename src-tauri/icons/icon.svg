@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c3f6e"/>
+      <stop offset="1" stop-color="#0c1f3d"/>
+    </linearGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffa63d"/>
+      <stop offset="1" stop-color="#f07a12"/>
+    </linearGradient>
+  </defs>
+  <!-- macOS-style rounded square with transparent margin -->
+  <rect x="100" y="100" width="824" height="824" rx="186" fill="url(#bg)"/>
+
+  <!-- IC package: the LCSC part -->
+  <g fill="#e8eef7">
+    <rect x="322" y="228" width="60" height="34" rx="8"/>
+    <rect x="322" y="292" width="60" height="34" rx="8"/>
+    <rect x="322" y="356" width="60" height="34" rx="8"/>
+    <rect x="322" y="420" width="60" height="34" rx="8"/>
+    <rect x="642" y="228" width="60" height="34" rx="8"/>
+    <rect x="642" y="292" width="60" height="34" rx="8"/>
+    <rect x="642" y="356" width="60" height="34" rx="8"/>
+    <rect x="642" y="420" width="60" height="34" rx="8"/>
+  </g>
+  <rect x="372" y="190" width="280" height="300" rx="28" fill="url(#chip)"/>
+  <circle cx="418" cy="236" r="16" fill="#fff3e3"/>
+
+  <!-- arrow: into the library -->
+  <g fill="none" stroke="#ffffff" stroke-width="36" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M512 520 V620"/>
+    <path d="M446 566 L512 632 L578 566"/>
+  </g>
+
+  <!-- library: stack of books -->
+  <g>
+    <rect x="322" y="672" width="380" height="60" rx="16" fill="#7dd3f7"/>
+    <rect x="292" y="748" width="440" height="60" rx="16" fill="#5ec1ef"/>
+    <rect x="262" y="824" width="500" height="60" rx="16" fill="#3fa9e3"/>
+  </g>
+</svg>
