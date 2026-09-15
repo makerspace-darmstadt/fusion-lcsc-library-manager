@@ -49,9 +49,9 @@ jobs:
           workspaces: './src-tauri -> target'
       - run: npm ci
       # Windows: Azure Artifact Signing (Trusted Signing) via tauri's bundle.windows.signCommand.
-      - name: Install trusted-signing-cli
+      - name: Install artifact-signing-cli
         if: matrix.platform == 'windows-latest'
-        run: cargo install trusted-signing-cli --locked
+        run: cargo install artifact-signing-cli --locked
       # macOS: tauri-action signs with the Developer ID certificate and notarizes when the APPLE_* env vars are set.
       - uses: tauri-apps/tauri-action@v0
         env:
@@ -69,6 +69,10 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 'Fusion LCSC Library Manager ${{ github.ref_name }}'
           releaseBody: 'macOS builds are signed with a Developer ID certificate and notarized; Windows installers are signed via Azure Artifact Signing.'
+      - name: Windows signing log
+        if: always() && matrix.platform == 'windows-latest'
+        shell: pwsh
+        run: if (Test-Path "$env:RUNNER_TEMP\sign-windows.log") { Get-Content "$env:RUNNER_TEMP\sign-windows.log" } else { 'no sign log' }
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}

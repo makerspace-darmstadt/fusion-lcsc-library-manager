@@ -33,16 +33,13 @@
     ],
     "windows": {
       "signCommand": {
-        "cmd": "trusted-signing-cli",
+        "cmd": "pwsh",
         "args": [
-          "-e",
-          "https://weu.codesigning.azure.net",
-          "-a",
-          "mksp-trusted-signing",
-          "-c",
-          "MKSP-Windows-Signature",
-          "-d",
-          "Fusion LCSC Library Manager",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "sign-windows.ps1",
           "%1"
         ]
       }
