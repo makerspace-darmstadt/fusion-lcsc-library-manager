@@ -69,10 +69,10 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 'Fusion LCSC Library Manager ${{ github.ref_name }}'
           releaseBody: 'macOS builds are signed with a Developer ID certificate and notarized; Windows installers are signed via Azure Artifact Signing.'
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
       - name: Windows signing log
         if: always() && matrix.platform == 'windows-latest'
         shell: pwsh
         run: if (Test-Path "$env:RUNNER_TEMP\sign-windows.log") { Get-Content "$env:RUNNER_TEMP\sign-windows.log" } else { 'no sign log' }
-          releaseDraft: true
-          prerelease: false
-          args: ${{ matrix.args }}
